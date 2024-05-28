@@ -82,7 +82,7 @@ def signal_handler(sigNum, frame):
 @click.option('--port', envvar='OPENFAN_PORT', required=True, help="Port of the OpenFAN Controller API service")
 @click.option('-s', '--sensors', envvar='OPENFAN_SENSORS', required=True, help="Path to disk sensors file (`default `/mnt/OpenFanService/sensors/disks.ini`)")
 @click.option('-p', '--profile', envvar='OPENFAN_PROFILE', required=True, help="Path to fan profile (default: `/mnt/OpenFanService/data/fan_profiles.json`)")
-@click.option('-l', '--livereload', envvar='OPENFAN_RELOAD', required=False, default=False, help="Reload fan profiles before every update cycle")
+@click.option('-l', '--livereload', envvar='OPENFAN_RELOAD', required=True, help="Reload fan profiles before every update cycle")
 def main(host, port, sensors, profile, livereload):
     signal.signal(signal.SIGTERM, signal_handler)
     signal.signal(signal.SIGINT, signal_handler)
