@@ -78,25 +78,29 @@ def signal_handler(sigNum, frame):
     sys.exit(0)
 
 @click.command()
+@click.option('-h', '--host', envvar='OPENFAN_HOST', required=True, help="IP address of the OpenFAN Controller API service")
 @click.option('-s', '--sensors', envvar='OPENFAN_SENSORS', required=True, help="Path to disk sensors file (`default `/mnt/OpenFanService/sensors/disks.ini`)")
 @click.option('-p', '--profile', envvar='OPENFAN_PROFILE', required=True, help="Path to fan profile (default: `/mnt/OpenFanService/data/fan_profiles.json`)")
 @click.option('-l', '--livereload', envvar='OPENFAN_RELOAD', required=False, default=False, help="Reload fan profiles before every update cycle")
-def main(sensors, profile, livereload):
+def main(host, sensors, profile, livereload):
     signal.signal(signal.SIGTERM, signal_handler)
     signal.signal(signal.SIGINT, signal_handler)
     set_logger_level('debug')
 
-    if livereload is not False:
-        livereload = True
+    if livereload.lower() in ['true', '1', 'yes', 'y', 'on']:
+        arg_live_reload = True
+    else:
+        arg_live_reload = False
 
     logger.info("---- Starting OpenFAN UnRAID Service ----")
+    logger.info(f"-- API Host IP: `{host}`")
     logger.info(f"-- Sensors: `{sensors}`")
     logger.info(f"-- Profile: `{profile}`")
-    logger.info(f"-- LiveReload: `{livereload}`")
+    logger.info(f"-- LiveReload: `{arg_live_reload}`")
 
 
-    OpenFan = FanController(sensors, profile)
-    OpenFan.run_forever(live_reload=livereload)
+    OpenFan = FanController(sensors, profile, openfan_host=host)
+    OpenFan.run_forever(live_reload=arg_live_reload)
 
 if __name__ == "__main__":
     main(None, None, None)
