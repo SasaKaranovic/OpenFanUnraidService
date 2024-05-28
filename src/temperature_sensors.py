@@ -30,4 +30,4 @@ class TemperatureSensors:
         temp = self.sensors.get(sensorID, None)
         if temp == '*':
             return 0
-        return temp
+        return int(temp)
