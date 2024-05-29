@@ -21,6 +21,7 @@ class TemperatureSensors:
         for section in self.cfgParser.sections():
             temp = self.cfgParser[section].get('temp', '"-1"').replace('\"', '')
             sensor = section.replace('\"', '')
+            logger.debug(f"Sensor `{sensor}` temperature is `{temp}°C`")
             self.sensors[sensor] = temp
 
     def list_sensors(self):
@@ -28,6 +29,10 @@ class TemperatureSensors:
 
     def get_sensor(self, sensorID):
         temp = self.sensors.get(sensorID, None)
+        if temp is None:
+            logger.error(f"Could not find sensor!. (`{sensorID}`)")
+            return 0
+
         if temp == '*':
             return 0
         return int(temp)
