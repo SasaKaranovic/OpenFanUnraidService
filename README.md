@@ -41,7 +41,7 @@ docker run -d --name OpenFANservice \
 -v /var/local/emhttp:/mnt/OpenFanService/sensors:ro \
 -v /mnt/user/appdata/openfanservice/fan_profiles.json:/mnt/OpenFanService/data/fan_profiles.json:ro \
 -e "OPENFAN_HOST=192.168.10.25" \
--e "OPENFAN_PORT=3210" \
+-e "OPENFAN_PORT=3000" \
 -e "OPENFAN_SENSORS=/mnt/OpenFanService/sensors/disks.ini" \
 -e "OPENFAN_PROFILE=/mnt/OpenFanService/data/fan_profiles.json" \
 -e "OPENFAN_RELOAD=True" \
