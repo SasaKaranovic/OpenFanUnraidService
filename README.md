@@ -48,13 +48,13 @@ docker run -d --name OpenFANservice \
 ghcr.io/sasakaranovic/openfanunraidservice:release
 ```
 
-`-v /var/local/emhttp:/mnt/OpenFanService/sensors:ro` - Mount sensor data to docker container (as read-only)
-`-v /mnt/user/appdata/openfanservice/fan_profiles.json:/mnt/OpenFanService/data/fan_profiles.json:ro` - Mount fan profiles .json file to docker container (as read-only)
-`-e "OPENFAN_HOST=192.168.10.25"` - IP address of the OpenFAN Controller docker container
-`-e "OPENFAN_PORT=3000"` - API port used by OpenFAN Controller docker container
-`-e "OPENFAN_SENSORS=/mnt/OpenFanService/sensors/disks.ini"` - Path to .ini file containing sensor/disk information
-`-e "OPENFAN_PROFILE=/mnt/OpenFanService/data/fan_profiles.json"` - Path to .json file containing fan profiles
-`-e "OPENFAN_RELOAD=True"` - Set to True to re-read fan profiles before every update. Otherwise they will be read once on container startup.
+- `-v /var/local/emhttp:/mnt/OpenFanService/sensors:ro` - Mount sensor data to docker container (as read-only)
+- `-v /mnt/user/appdata/openfanservice/fan_profiles.json:/mnt/OpenFanService/data/fan_profiles.json:ro` - Mount fan profiles .json file to docker container (as read-only)
+- `-e "OPENFAN_HOST=192.168.10.25"` - IP address of the OpenFAN Controller docker container
+- `-e "OPENFAN_PORT=3000"` - API port used by OpenFAN Controller docker container
+- `-e "OPENFAN_SENSORS=/mnt/OpenFanService/sensors/disks.ini"` - Path to .ini file containing sensor/disk information
+- `-e "OPENFAN_PROFILE=/mnt/OpenFanService/data/fan_profiles.json"` - Path to .json file containing fan profiles
+- `-e "OPENFAN_RELOAD=True"` - Set to True to re-read fan profiles before every update. Otherwise they will be read once on container startup.
 
 
 
@@ -83,10 +83,10 @@ There are many online syntax validation tools (ie. https://jsonlint.com/)
       "TempSource": "parity",    // Which sensor (disk temperature) to use for fan curve
       "UsePWM": false,    // true means values in points are RPM
       "Points": [
-          "0,500",    // At 0C and above (to the next point, if exists) fan should be at 0 RPM (or %PWM if UsePWM is true)
-          "20,700",  // At 20C and above (to the next point, if exists) fan should be at 300 RPM (or %PWM if UsePWM is true)
-          "35,1000",  // At 35C and above (to the next point, if exists) fan should be at 500 RPM (or %PWM if UsePWM is true)
-          "45,1500"   // At 45C and above (to the next point, if exists) fan should be at 1000 RPM (or %PWM if UsePWM is true)
+          "0,500",    // At 0C and above (to the next point, if exists) fan should be at 500 RPM (or %PWM if UsePWM is true)
+          "20,700",  // At 20C and above (to the next point, if exists) fan should be at 700 RPM (or %PWM if UsePWM is true)
+          "35,1000",  // At 35C and above (to the next point, if exists) fan should be at 1000 RPM (or %PWM if UsePWM is true)
+          "45,1500"   // At 45C and above (to the next point, if exists) fan should be at 1500 RPM (or %PWM if UsePWM is true)
       ]
     },
     {
@@ -94,10 +94,8 @@ There are many online syntax validation tools (ie. https://jsonlint.com/)
       "TempSource": "disk1",    // Which sensor (disk temperature) to use for fan curve
       "UsePWM": false,    // Which sensor (disk temperature) to use for fan curve
       "Points": [
-          "0,0",    // At 0C and above (to the next point, if exists) fan should be at 0 RPM (or %PWM if UsePWM is true)
-          "20,300",  // At 20C and above (to the next point, if exists) fan should be at 300 RPM (or %PWM if UsePWM is true)
-          "35,500",  // At 35C and above (to the next point, if exists) fan should be at 500 RPM (or %PWM if UsePWM is true)
-          "45,750"   // At 45C and above (to the next point, if exists) fan should be at 750 RPM (or %PWM if UsePWM is true)
+          "0,1000",    // At 0C and above (to the next point, if exists) fan should be at 1000 RPM (or %PWM if UsePWM is true)
+          "45,1200"   // At 45C and above (to the next point, if exists) fan should be at 1200 RPM (or %PWM if UsePWM is true)
       ]
     },
     {
