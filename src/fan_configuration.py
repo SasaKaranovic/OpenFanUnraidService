@@ -46,9 +46,18 @@ class FanConfiguration:
     def create_fan_profile(self, data):
         try:
             name = data.get('Name', None)
-            self.fan_profiles[name] = data
+            sensor = data.get('TempSource', "")
+            usePWM = data.get('UsePWM', False)
+            jsonPoints = data.get('Points', [])
+            points = {}
+
+            for point in sorted(jsonPoints):
+                p = point.split(',', 1)
+                points[int(p[0])] = int(p[1])
+
+            self.fan_profiles[name] = {'Name': name, 'TempSource': sensor, 'UsePWM': usePWM, 'Points': points, }
             logger.debug(f"Created profile {name}")
-            logger.debug(f"-- Temp Source: `{data['TempSource']}` Points: {data['Points']}")
+            logger.debug(f"-- Temp Source: `{sensor}` Points: {points}")
         except KeyError as e:
             logger.error("Invalid fan profile data:")
             logger.error(f"Error: {e}")

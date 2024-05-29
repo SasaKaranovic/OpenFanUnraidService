@@ -52,16 +52,17 @@ class FanController:
 
         fan_value = self.calculate_new_fan_value(profile, temperature)
         if profile.get('UsePWM', False):
+            logger.debug(f"Setting fan {fanData['Identifier']} to {fan_value}% PWM based on sensor temperature of {temperature}°C")
             return self.openfan_client.set_fan_pwm(fanData['Identifier'], fan_value)
+        logger.debug(f"Setting fan {fanData['Identifier']} to {fan_value} RPM based on sensor temperature of {temperature}°C")
         return self.openfan_client.set_fan_rpm(fanData['Identifier'], fan_value)
 
     def calculate_new_fan_value(self, profile, temperature):
         new_value = 0
 
-        for point in profile['Points']:
-            p = point.split(',', 1)
-            if temperature >= int(p[0]):
-                new_value = int(p[1])
+        for threshold, value in profile['Points'].items():
+            if temperature >= threshold:
+                new_value = value
         return new_value
 
     def run_forever(self, live_reload=False):
@@ -88,7 +89,7 @@ def main(host, port, sensors, profile, livereload):
     signal.signal(signal.SIGINT, signal_handler)
     set_logger_level('debug')
 
-    if livereload.lower() in ['true', '1', 'yes', 'y', 'on']:
+    if livereload.lower() in ['true', '1', 'yes', 'y', 'on']: # pylint: disable=simplifiable-if-statement
         arg_live_reload = True
     else:
         arg_live_reload = False
@@ -104,4 +105,4 @@ def main(host, port, sensors, profile, livereload):
     OpenFan.run_forever(live_reload=arg_live_reload)
 
 if __name__ == "__main__":
-    main(None, None, None)
+    main(None, None, None, None, None)

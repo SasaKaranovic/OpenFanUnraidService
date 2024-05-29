@@ -13,7 +13,12 @@ class OpenFanClient:
 
     def _fetch_api_data(self):
         if time.time() >= self.next_api_fetch:
-            r = requests.get(f'{self.api_url}/fan/status', verify=False, timeout=2)
+            try:
+                r = requests.get(f'{self.api_url}/fan/status', verify=False, timeout=(0.5, 1))
+            except requests.exceptions.ConnectTimeout as e:
+                logger.error("Server timeout...")
+                logger.error(e)
+                return
             response = r.json()
 
             if response['status'] == 'ok':
@@ -22,13 +27,21 @@ class OpenFanClient:
             else:
                 # Log error
                 pass
+
     def get_fan_rpm(self):
         self._fetch_api_data()
         return self.fan_data
 
     def set_fan_pwm(self, fanIdentifier, pwm):
         fan = self._fan_id_to_number(fanIdentifier)
-        r = requests.get(f'{self.api_url}/fan/{fan}/set?value={pwm}', verify=False, timeout=2)
+
+        try:
+            r = requests.get(f'{self.api_url}/fan/{fan}/set?value={pwm}', verify=False, timeout=(0.5, 1))
+        except requests.exceptions.ConnectTimeout as e:
+            logger.error("Server timeout...")
+            logger.error(e)
+            return False
+
         response = r.json()
 
         if response['status'] == 'ok':
@@ -39,7 +52,14 @@ class OpenFanClient:
 
     def set_fan_rpm(self, fanIdentifier, rpm):
         fan = self._fan_id_to_number(fanIdentifier)
-        r = requests.get(f'{self.api_url}/fan/{fan}/rpm?value={rpm}', verify=False, timeout=2)
+
+        try:
+            r = requests.get(f'{self.api_url}/fan/{fan}/rpm?value={rpm}', verify=False, timeout=(0.5, 1))
+        except requests.exceptions.ConnectTimeout as e:
+            logger.error("Server timeout...")
+            logger.error(e)
+            return False
+
         response = r.json()
 
         if response['status'] == 'ok':
