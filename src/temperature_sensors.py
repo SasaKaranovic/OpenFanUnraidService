@@ -1,6 +1,6 @@
 import os
 import configparser
-
+from base_logger import logger
 
 class TemperatureSensors:
     def __init__(self, file):
