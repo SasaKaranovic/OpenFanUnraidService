@@ -1,6 +1,8 @@
 import sys
 import signal
 import time
+from math import ceil
+from bisect import bisect_left
 import click
 from base_logger import logger, set_logger_level
 from temperature_sensors import TemperatureSensors
@@ -40,6 +42,7 @@ class FanController:
             logger.debug(f"Fan `{fanData['Identifier']}` has no assigned profile. Skipping...")
             return False
 
+        curveType = profile.get('CurveType')
         temperature = self.sensors.get_sensor(profile['TempSource'])
 
         if profile is None:
@@ -50,20 +53,47 @@ class FanController:
             logger.error("Invalid temp data!")
             return False
 
-        fan_value = self.calculate_new_fan_value(profile, temperature)
+        fan_value = self.calculate_new_fan_value(profile, temperature, curveType)
         if profile.get('UsePWM', False):
             logger.debug(f"Setting fan {fanData['Identifier']} to {fan_value}% PWM based on sensor temperature of {temperature}°C")
             return self.openfan_client.set_fan_pwm(fanData['Identifier'], fan_value)
         logger.debug(f"Setting fan {fanData['Identifier']} to {fan_value} RPM based on sensor temperature of {temperature}°C")
         return self.openfan_client.set_fan_rpm(fanData['Identifier'], fan_value)
 
-    def calculate_new_fan_value(self, profile, temperature):
+    def _curve_threshold(self, profile, temperature):
         new_value = 0
-
         for threshold, value in profile['Points'].items():
             if temperature >= threshold:
                 new_value = value
         return new_value
+
+    def _curve_linear(self, profile, temperature):
+        points = list(profile['Points'].keys())
+        values = list(profile['Points'].values())
+        insertion = bisect_left(points, temperature)
+
+        if insertion == 0:
+            return values[0]
+
+        if insertion >= len(values):
+            return values[-1]
+
+        x1=points[insertion-1]
+        y1=values[insertion-1]
+        x2=points[insertion]
+        y2=values[insertion]
+        value = ceil(((y2-y1)/(x2-x1)) * (temperature-x1) + y1)
+        return value
+
+    def calculate_new_fan_value(self, profile, temperature, curveType):
+        if curveType == 'threshold':
+            return self._curve_threshold(profile, temperature)
+
+        if curveType == 'linear':
+            return self._curve_linear(profile, temperature)
+
+        logger.error("Unknown curve type ``! Falling back to threshold!")
+        return self.calculate_new_fan_value(profile, temperature, 'threshold')
 
     def run_forever(self, live_reload=False):
         while True:

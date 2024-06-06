@@ -82,6 +82,7 @@ There are many online syntax validation tools (ie. https://jsonlint.com/)
       "Name": "DefaultProfile",  // Unique
       "TempSource": "parity",    // Which sensor (disk temperature) to use for fan curve
       "UsePWM": false,    // true means values in points are RPM
+      "CurveType": "threshold",    // Treat points as thresholds (ie temperature between 20-34C will always have fan at 700 RPM)
       "Points": [
           "0,500",    // At 0C and above (to the next point, if exists) fan should be at 500 RPM (or %PWM if UsePWM is true)
           "20,700",  // At 20C and above (to the next point, if exists) fan should be at 700 RPM (or %PWM if UsePWM is true)
@@ -92,10 +93,12 @@ There are many online syntax validation tools (ie. https://jsonlint.com/)
     {
       "Name": "SomeOtherProfile",
       "TempSource": "disk1",    // Which sensor (disk temperature) to use for fan curve
-      "UsePWM": false,    // Which sensor (disk temperature) to use for fan curve
+      "UsePWM": false,    // true means values in points are RPM
+      "CurveType": "linear",    // Interpolate between two points (ie temperature is 15C, the fan will be at 750 RPM)
       "Points": [
-          "0,1000",    // At 0C and above (to the next point, if exists) fan should be at 1000 RPM (or %PWM if UsePWM is true)
-          "45,1200"   // At 45C and above (to the next point, if exists) fan should be at 1200 RPM (or %PWM if UsePWM is true)
+          "0,500",    // At 0C and above (to the next point, if exists) fan should be at 1000 RPM (or %PWM if UsePWM is true)
+          "30,1000",  // At 30C and above (to the next point, if exists) fan should be at 1000 RPM (or %PWM if UsePWM is true)
+          "45,1500"   // At 45C and above (to the next point, if exists) fan should be at 1200 RPM (or %PWM if UsePWM is true)
       ]
     },
     {

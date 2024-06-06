@@ -48,6 +48,7 @@ class FanConfiguration:
             name = data.get('Name', None)
             sensor = data.get('TempSource', "")
             usePWM = data.get('UsePWM', False)
+            curveType = data.get('CurveType', 'threshold').lower()
             jsonPoints = data.get('Points', [])
             points = {}
 
@@ -55,9 +56,17 @@ class FanConfiguration:
                 p = point.split(',', 1)
                 points[int(p[0])] = int(p[1])
 
-            self.fan_profiles[name] = {'Name': name, 'TempSource': sensor, 'UsePWM': usePWM, 'Points': points, }
+            if len(points) <= 0:
+                logger.error(f"Profile `{name}` has no points!")
+                raise KeyError(f"Profile `{name}` has no pints!")
+
+            if curveType not in ['threshold', 'linear']:
+                logger.error(f"Unsupported curve type `{curveType}`. Falling back to threshold.")
+                curveType = 'threshold'
+
+            self.fan_profiles[name] = {'Name': name, 'TempSource': sensor, 'UsePWM': usePWM, 'CurveType': curveType, 'Points': points, }
             logger.debug(f"Created profile {name}")
-            logger.debug(f"-- Temp Source: `{sensor}` Points: {points}")
+            logger.debug(f"-- Temp Source: `{sensor}` CurveType: `{curveType}` Points: {points}")
         except KeyError as e:
             logger.error("Invalid fan profile data:")
             logger.error(f"Error: {e}")
