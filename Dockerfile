@@ -3,7 +3,7 @@ FROM ubuntu:22.04
 
 # LABEL about the custom image
 LABEL maintainer="sasa@karanovic.ca"
-LABEL version="0.1"
+LABEL version="0.2"
 LABEL description="OpenFan UnRAID service for simple fan speed control based on UnRAID disk temperatures"
 LABEL org.opencontainers.image.source=https://github.com/sasakaranovic/openfancontroller
 
@@ -29,4 +29,3 @@ RUN ["chmod", "+x", "/mnt/OpenFanService/start.sh"]
 
 # Run entrypoint
 ENTRYPOINT ["/mnt/OpenFanService/start.sh"]
-

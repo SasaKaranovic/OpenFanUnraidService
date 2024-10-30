@@ -9,6 +9,7 @@ from temperature_sensors import TemperatureSensors
 from openfan_client import OpenFanClient
 from fan_configuration import FanConfiguration
 
+# pylint: disable=too-many-positional-arguments
 class FanController:
     def __init__(self,
                  file_sensors,
@@ -26,7 +27,7 @@ class FanController:
         self.config = FanConfiguration(profile_file=file_profiles)
 
         self.openfan_client = OpenFanClient(openfan_host, openfan_port)
-        self.update_period = update_period
+        self.update_period = max(update_period, 2)
 
     def read_temperature(self):
         self.sensors.read_temperature()
@@ -112,7 +113,7 @@ def signal_handler(sigNum, frame):
 @click.option('--host', envvar='OPENFAN_HOST', required=True, help="IP address of the OpenFAN Controller API service")
 @click.option('--port', envvar='OPENFAN_PORT', required=True, help="Port of the OpenFAN Controller API service")
 @click.option('-s', '--sensors', envvar='OPENFAN_SENSORS', required=True, help="Path to disk sensors file (`default `/mnt/OpenFanService/sensors/disks.ini`)")
-@click.option('-p', '--profile', envvar='OPENFAN_PROFILE', required=True, help="Path to fan profile (default: `/mnt/OpenFanService/data/fan_profiles.json`)")
+@click.option('-p', '--profile', envvar='OPENFAN_PROFILE', required=True, help="Path to fan profile (default: `/mnt/OpenFanService/data/fan_profiles.yaml`)")
 @click.option('-l', '--livereload', envvar='OPENFAN_RELOAD', required=True, help="Reload fan profiles before every update cycle")
 def main(host, port, sensors, profile, livereload):
     signal.signal(signal.SIGTERM, signal_handler)

@@ -1,36 +1,60 @@
 import sys
 import os
 import json
+from ruamel.yaml import YAML
 from base_logger import logger
-
 
 class FanConfiguration:
     def __init__(self, profile_file):
         if not os.path.isfile(profile_file):
-            raise FileExistsError(f"Fan Profile config file `{profile_file}` does not exist!")
+            raise FileExistsError(f"Fan Profile file `{profile_file}` does not exist!")
 
         self.file = profile_file
+        self.profile_data = {}
         self.fan_profiles = {}
         self.fan_controls = {}
-        self._readProfileFile()
-
-    def _readProfileFile(self):
-        try:
-            with open(self.file, "r", encoding='utf-8') as read_file:
-                data = json.load(read_file)
-                self._parse_config_data(data)
-        except json.decoder.JSONDecodeError as e:
-            logger.error("Error parsing json file")
-            logger.error(f"Error: {e}")
-            sys.exit(-1)
+        self.reload()
 
     def reload(self):
         self._readProfileFile()
+        self._parse_profile_data()
 
+    def _readProfileFile(self):
+        if self.file.endswith('.yaml'):
+            self._load_yaml()
+        elif self.file.endswith('.json'):
+            self._load_json()
+        else:
+            raise FileExistsError("Unsupported profile file type!")
 
-    def _parse_config_data(self, jsonData):
-        profiles = jsonData.get('FanProfiles', None)
-        controls = jsonData.get('FanControls', None)
+    def _load_json(self):
+        logger.info("--- Note: YAML file-type is supported:")
+        logger.info("We recommend switching your fan profile format from JSON to YAML.")
+        logger.info("As per user request, we have added .yaml support to improve readability of fan profiles.")
+        logger.info("If you wish to convert your .json file to .yaml, you can use online JSON-to-YAML converters.")
+        try:
+            with open(self.file, "r", encoding='utf-8') as read_file:
+                self.profile_data = json.load(read_file)
+
+        except json.decoder.JSONDecodeError as e:
+            logger.error("Error parsing profile file")
+            logger.error(f"Error: {e}")
+            sys.exit(-1)
+
+    def _load_yaml(self):
+        try:
+            yaml = YAML(typ="safe")
+            with open(self.file, "r", encoding='utf-8') as read_file:
+                self.profile_data = yaml.load(read_file)
+
+        except Exception as e:
+            logger.error("Error parsing profile file")
+            logger.error(f"Error: {e}")
+            sys.exit(-1)
+
+    def _parse_profile_data(self):
+        profiles = self.profile_data.get('FanProfiles', None)
+        controls = self.profile_data.get('FanControls', None)
 
         if profiles is None and controls is None:
             logger.error("Failed to load profiles and controls!")
@@ -49,10 +73,10 @@ class FanConfiguration:
             sensor = data.get('TempSource', "")
             usePWM = data.get('UsePWM', False)
             curveType = data.get('CurveType', 'threshold').lower()
-            jsonPoints = data.get('Points', [])
+            profilePoints = data.get('Points', [])
             points = {}
 
-            for point in sorted(jsonPoints):
+            for point in sorted(profilePoints):
                 p = point.split(',', 1)
                 points[int(p[0])] = int(p[1])
 
@@ -72,7 +96,6 @@ class FanConfiguration:
             logger.error(f"Error: {e}")
             logger.error(data)
             logger.error("---")
-            return
 
     def create_fan_control(self, data):
         try:
@@ -85,7 +108,6 @@ class FanConfiguration:
             logger.error(f"Error: {e}")
             logger.error(data)
             logger.error("---")
-            return
 
     def get_fan_profile(self, identifier):
         if identifier == "":

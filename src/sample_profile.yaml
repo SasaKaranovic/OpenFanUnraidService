@@ -1,0 +1,68 @@
+__app_version__: '2'
+
+FanProfiles:
+  - Name: DefaultProfile      # Unique profile name
+    TempSource: parity        # Which sensor (disk temperature) to use for fan curve
+    UsePWM: false             # true means values in `points` section are expressed as PWM (0-100) instead of fan RPM.
+    CurveType: threshold      # `threshold` curve will treat `Points` as simple thresholds
+    Points:
+      - '0,500'               # Value before `,` is temperature. Value after `,` is fan RPM/PWM
+      - '20,700'              # Value before `,` is temperature. Value after `,` is fan RPM/PWM
+      - '35,1000'             # Value before `,` is temperature. Value after `,` is fan RPM/PWM
+      - '45,1500'             # Value before `,` is temperature. Value after `,` is fan RPM/PWM
+
+  - Name: SomeOtherProfile    # Unique profile name
+    TempSource: disk1         # Which sensor (disk temperature) to use for fan curve
+    UsePWM: false             # true means values in `points` section are expressed as PWM (0-100) instead of fan RPM.
+    CurveType: linear         # `linear` curve will interpolate between the two temperature points and calculate the fan speed
+    Points:                   #
+      - '0,500'               # Value before `,` is temperature. Value after `,` is fan RPM/PWM
+      - '30,1000'             # Value before `,` is temperature. Value after `,` is fan RPM/PWM
+      - '45,1500'             # Value before `,` is temperature. Value after `,` is fan RPM/PWM
+
+  - Name: FixedRPM            # Unique profile name
+    TempSource: disk1         # Which sensor (disk temperature) to use for fan curve
+    UsePWM: false             # true means values in `points` section are expressed as PWM (0-100) instead of fan RPM.
+    Points:
+      - '0,1000'              # Basically regardless of temperature, fans assigned to this profile will always run at 1000 RPM
+
+FanControls:
+  - Identifier: OpenFAN/Fan/1 # Unique fan identifier (Fan #)
+    Name: 'Fan #1'            # User-friendly fan name
+    AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
+
+  - Identifier: OpenFAN/Fan/2 # Unique fan identifier (Fan #)
+    Name: 'Fan #2'            # User-friendly fan name
+    AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
+
+  - Identifier: OpenFAN/Fan/3 # Unique fan identifier (Fan #)
+    Name: 'Fan #3'            # User-friendly fan name
+    AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
+
+  - Identifier: OpenFAN/Fan/4 # Unique fan identifier (Fan #)
+    Name: 'Fan #4'            # User-friendly fan name
+    AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
+
+  - Identifier: OpenFAN/Fan/5 # Unique fan identifier (Fan #)
+    Name: 'Fan #5'            # User-friendly fan name
+    AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
+
+  - Identifier: OpenFAN/Fan/6 # Unique fan identifier (Fan #)
+    Name: 'Fan #6'            # User-friendly fan name
+    AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
+
+  - Identifier: OpenFAN/Fan/7 # Unique fan identifier (Fan #)
+    Name: 'Fan #7'            # User-friendly fan name
+    AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
+
+  - Identifier: OpenFAN/Fan/8 # Unique fan identifier (Fan #)
+    Name: 'Fan #8'            # User-friendly fan name
+    AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
+
+  - Identifier: OpenFAN/Fan/9 # Unique fan identifier (Fan #)
+    Name: 'Fan #9'            # User-friendly fan name
+    AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
+
+  - Identifier: OpenFAN/Fan/9 # Unique fan identifier (Fan #)
+    Name: 'Fan #9'            # User-friendly fan name
+    AssignedProfile: ''       # Pick which fan profile/curve should this fan follow

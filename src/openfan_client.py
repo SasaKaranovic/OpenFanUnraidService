@@ -1,3 +1,4 @@
+import os
 import time
 import requests
 from base_logger import logger
@@ -10,6 +11,9 @@ class OpenFanClient:
         self.next_api_fetch = 0
         self.api_fetch_period = 1
         self.fan_data = {}
+
+        # If we are testing, ignore http requests
+        self.ignore_requests = os.environ.get('OPENFAN_IGNORE_REQUESTS', False)
 
     def _fetch_api_data(self):
         if time.time() >= self.next_api_fetch:
@@ -25,14 +29,18 @@ class OpenFanClient:
                 self.next_api_fetch = time.time() + self.api_fetch_period
                 self.fan_data = response['data']
             else:
-                # Log error
-                pass
+                logger.error("Received non-ok status.")
+                logger.error(response)
 
     def get_fan_rpm(self):
         self._fetch_api_data()
         return self.fan_data
 
     def set_fan_pwm(self, fanIdentifier, pwm):
+        if self.ignore_requests:
+            logger.debug("OPENFAN_IGNORE_REQUESTS is set. Skipping http request part")
+            return True
+
         fan = self._fan_id_to_number(fanIdentifier)
 
         try:
@@ -51,6 +59,10 @@ class OpenFanClient:
         return False
 
     def set_fan_rpm(self, fanIdentifier, rpm):
+        if self.ignore_requests:
+            logger.debug("OPENFAN_IGNORE_REQUESTS is set. Skipping http request part")
+            return True
+
         fan = self._fan_id_to_number(fanIdentifier)
 
         try:
