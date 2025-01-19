@@ -69,7 +69,7 @@ ghcr.io/sasakaranovic/openfanunraidservice:release
 Below is an example of a simple fan_profiles.yaml file with comments explaining what each line does
 
 It's recommended that you double check your .yaml file for any syntax errors before starting the container.
-There are many online syntax validation tools (ie. https://yamlchecker.com//)
+There are many online syntax validation tools (ie. https://yamlchecker.com/)
 
 FanProfiles section is list of fan profiles/curves that you want to define.
 Each fan profile must have unique name.
