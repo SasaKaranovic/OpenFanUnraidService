@@ -43,8 +43,19 @@ class FanController:
             logger.debug(f"Fan `{fanData['Identifier']}` has no assigned profile. Skipping...")
             return False
 
-        curveType = profile.get('CurveType')
-        temperature = self.sensors.get_sensor(profile['TempSource'])
+        curveType = profile.get('CurveType', 'linear')
+        temperature = self.sensors.get_sensors(profile['TempSource'])
+        temp_eval_fn = profile.get('TempGroupEval', 'max')
+
+        if temp_eval_fn.lower() in ('', 'max'):
+            temperature = max(temperature)
+        elif temp_eval_fn.lower() == 'min':
+            logger.debug("Reverse temperature priority is specified in fan profiles (MIN instead of MAX).")
+            temperature = min(temperature)
+        else:
+            logger.error(f"Invalid temperature group evaluation specified `{temp_eval_fn}`. It should be either max or min (or empty).")
+            logger.error("Defaulting back to `max`")
+            temperature = max(temperature)
 
         if profile is None:
             logger.error("Invalid profile data!")

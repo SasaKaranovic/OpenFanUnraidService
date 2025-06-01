@@ -104,6 +104,18 @@ FanProfiles:
     Points:
       - '0,1000'              # Basically regardless of temperature, fans assigned to this profile will always run at 1000 RPM
 
+  - Name: MultiSensorProfile  # Unique profile name
+    TempSource:               # Which sensor(s) (disk temperature) to use for fan curve
+      - parity
+      - disk1
+    TempGroupEval: max        # Function used to evaluate `TempSource` sensor values. Default is max (also can leave empty and max will be used by default)
+    UsePWM: false             # true means values in `points` section are expressed as PWM (0-100) instead of fan RPM.
+    CurveType: linear         # `linear` curve will interpolate between the two temperature points and calculate the fan speed
+    Points:                   #
+      - '0,500'               # Value before `,` is temperature. Value after `,` is fan RPM/PWM
+      - '30,1000'             # Value before `,` is temperature. Value after `,` is fan RPM/PWM
+      - '45,1500'             # Value before `,` is temperature. Value after `,` is fan RPM/PWM
+
 FanControls:
   - Identifier: OpenFAN/Fan/1 # Unique fan identifier (Fan #)
     Name: 'Fan #1'            # User-friendly fan name

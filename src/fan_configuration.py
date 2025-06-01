@@ -70,11 +70,17 @@ class FanConfiguration:
     def create_fan_profile(self, data):
         try:
             name = data.get('Name', None)
-            sensor = data.get('TempSource', "")
+            sensors = data.get('TempSource', [])
+            TempGroupEval = data.get('TempGroupEval', 'max')
             usePWM = data.get('UsePWM', False)
             curveType = data.get('CurveType', 'threshold').lower()
             profilePoints = data.get('Points', [])
             points = {}
+
+            # There is no point in having a fan profile without at least one sensor
+            if len(sensors) <=0:
+                logger.error(f"Fan profile error: Profile named `{name}` must have at least one temperature sensor specified!")
+                raise ValueError(f"Fan profile error: Profile named `{name}` must have at least one temperature sensor specified!")
 
             for point in sorted(profilePoints):
                 p = point.split(',', 1)
@@ -88,9 +94,18 @@ class FanConfiguration:
                 logger.error(f"Unsupported curve type `{curveType}`. Falling back to threshold.")
                 curveType = 'threshold'
 
-            self.fan_profiles[name] = {'Name': name, 'TempSource': sensor, 'UsePWM': usePWM, 'CurveType': curveType, 'Points': points, }
-            logger.debug(f"Created profile {name}")
-            logger.debug(f"-- Temp Source: `{sensor}` CurveType: `{curveType}` Points: {points}")
+            self.fan_profiles[name] = {
+                                        'Name': name,
+                                        'TempSource': sensors,
+                                        'TempGroupEval': TempGroupEval,
+                                        'UsePWM': usePWM,
+                                        'CurveType': curveType,
+                                        'Points': points
+                                    }
+            logger.debug(f"Created profile `{name}`")
+            logger.debug(f"-- Temp Source: `{sensors}` (Eval: {TempGroupEval})")
+            logger.debug(f"-- CurveType: `{curveType}`")
+            logger.debug(f"-- Points: {points}")
         except KeyError as e:
             logger.error("Invalid fan profile data:")
             logger.error(f"Error: {e}")
