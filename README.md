@@ -117,44 +117,44 @@ FanProfiles:
       - '45,1500'             # Value before `,` is temperature. Value after `,` is fan RPM/PWM
 
 FanControls:
-  - Identifier: OpenFAN/Fan/1 # Unique fan identifier (Fan #)
+  - Identifier: OpenFAN/Fan/0 # Unique fan identifier (Fan #)
     Name: 'Fan #1'            # User-friendly fan name
     AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
 
-  - Identifier: OpenFAN/Fan/2 # Unique fan identifier (Fan #)
+  - Identifier: OpenFAN/Fan/1 # Unique fan identifier (Fan #)
     Name: 'Fan #2'            # User-friendly fan name
     AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
 
-  - Identifier: OpenFAN/Fan/3 # Unique fan identifier (Fan #)
+  - Identifier: OpenFAN/Fan/2 # Unique fan identifier (Fan #)
     Name: 'Fan #3'            # User-friendly fan name
     AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
 
-  - Identifier: OpenFAN/Fan/4 # Unique fan identifier (Fan #)
+  - Identifier: OpenFAN/Fan/3 # Unique fan identifier (Fan #)
     Name: 'Fan #4'            # User-friendly fan name
     AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
 
-  - Identifier: OpenFAN/Fan/5 # Unique fan identifier (Fan #)
+  - Identifier: OpenFAN/Fan/4 # Unique fan identifier (Fan #)
     Name: 'Fan #5'            # User-friendly fan name
     AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
 
-  - Identifier: OpenFAN/Fan/6 # Unique fan identifier (Fan #)
+  - Identifier: OpenFAN/Fan/5 # Unique fan identifier (Fan #)
     Name: 'Fan #6'            # User-friendly fan name
     AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
 
-  - Identifier: OpenFAN/Fan/7 # Unique fan identifier (Fan #)
+  - Identifier: OpenFAN/Fan/6 # Unique fan identifier (Fan #)
     Name: 'Fan #7'            # User-friendly fan name
     AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
 
-  - Identifier: OpenFAN/Fan/8 # Unique fan identifier (Fan #)
+  - Identifier: OpenFAN/Fan/7 # Unique fan identifier (Fan #)
     Name: 'Fan #8'            # User-friendly fan name
     AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
 
-  - Identifier: OpenFAN/Fan/9 # Unique fan identifier (Fan #)
+  - Identifier: OpenFAN/Fan/8 # Unique fan identifier (Fan #)
     Name: 'Fan #9'            # User-friendly fan name
     AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
 
   - Identifier: OpenFAN/Fan/9 # Unique fan identifier (Fan #)
-    Name: 'Fan #9'            # User-friendly fan name
+    Name: 'Fan #10'           # User-friendly fan name
     AssignedProfile: ''       # Pick which fan profile/curve should this fan follow
 
 ```
