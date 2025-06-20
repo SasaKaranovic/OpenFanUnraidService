@@ -38,47 +38,47 @@
   "FanControls":
   [
     {
-      "Identifier": "OpenFAN/Fan/1",
+      "Identifier": "OpenFAN/Fan/0",
       "Name": "Fan #1",
       "AssignedProfile": ""
     },
     {
-      "Identifier": "OpenFAN/Fan/2",
+      "Identifier": "OpenFAN/Fan/1",
       "Name": "Fan #2",
       "AssignedProfile": ""
     },
     {
-      "Identifier": "OpenFAN/Fan/3",
+      "Identifier": "OpenFAN/Fan/2",
       "Name": "Fan #3",
       "AssignedProfile": ""
     },
     {
-      "Identifier": "OpenFAN/Fan/4",
+      "Identifier": "OpenFAN/Fan/3",
       "Name": "Fan #4",
       "AssignedProfile": ""
     },
     {
-      "Identifier": "OpenFAN/Fan/5",
+      "Identifier": "OpenFAN/Fan/4",
       "Name": "Fan #5",
       "AssignedProfile": ""
     },
     {
-      "Identifier": "OpenFAN/Fan/6",
+      "Identifier": "OpenFAN/Fan/5",
       "Name": "Fan #6",
       "AssignedProfile": ""
     },
     {
-      "Identifier": "OpenFAN/Fan/7",
+      "Identifier": "OpenFAN/Fan/6",
       "Name": "Fan #7",
       "AssignedProfile": ""
     },
     {
-      "Identifier": "OpenFAN/Fan/8",
+      "Identifier": "OpenFAN/Fan/7",
       "Name": "Fan #8",
       "AssignedProfile": ""
     },
     {
-      "Identifier": "OpenFAN/Fan/9",
+      "Identifier": "OpenFAN/Fan/8",
       "Name": "Fan #9",
       "AssignedProfile": ""
     },
